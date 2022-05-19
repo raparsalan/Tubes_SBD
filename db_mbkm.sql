@@ -11,27 +11,11 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 19/05/2022 10:47:37
+ Date: 19/05/2022 11:11:09
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for admin
--- ----------------------------
-DROP TABLE IF EXISTS `admin`;
-CREATE TABLE `admin`  (
-  `id_admin` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password_admin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_admin`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of admin
--- ----------------------------
-INSERT INTO `admin` VALUES (1, 'admin1', '12345');
 
 -- ----------------------------
 -- Table structure for daftar_peserta
@@ -42,10 +26,10 @@ CREATE TABLE `daftar_peserta`  (
   `id_program` int NULL DEFAULT NULL,
   `sks_ditukar` int NULL DEFAULT NULL,
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  INDEX `data mahasiswa`(`id_mhs` ASC) USING BTREE,
-  INDEX `data program`(`id_program` ASC) USING BTREE,
-  CONSTRAINT `data mahasiswa` FOREIGN KEY (`id_mhs`) REFERENCES `mahasiswa` (`id_mhs`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `data program` FOREIGN KEY (`id_program`) REFERENCES `program` (`id_program`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `id mahasiswa`(`id_mhs` ASC) USING BTREE,
+  INDEX `id program`(`id_program` ASC) USING BTREE,
+  CONSTRAINT `id mahasiswa` FOREIGN KEY (`id_mhs`) REFERENCES `mahasiswa` (`id_mhs`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `id program` FOREIGN KEY (`id_program`) REFERENCES `program` (`id_program`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -58,17 +42,15 @@ CREATE TABLE `daftar_peserta`  (
 DROP TABLE IF EXISTS `mahasiswa`;
 CREATE TABLE `mahasiswa`  (
   `id_mhs` int NOT NULL AUTO_INCREMENT,
-  `nim` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password_mhs` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `nama_lengkap` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `nim` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `semester` int NULL DEFAULT NULL,
   PRIMARY KEY (`id_mhs`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of mahasiswa
 -- ----------------------------
-INSERT INTO `mahasiswa` VALUES (1, '2108938', '12345', 'Rafi Arsalan', 5);
 
 -- ----------------------------
 -- Table structure for program
@@ -94,5 +76,21 @@ INSERT INTO `program` VALUES (8, 'Indonesian International Student Mobility Awar
 INSERT INTO `program` VALUES (9, 'Kementrian ESDM - GERILYA');
 INSERT INTO `program` VALUES (10, 'Pejuang Muda Kampus Merdeka');
 INSERT INTO `program` VALUES (11, 'Proyek Kemanusiaan');
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `id_user` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `authority` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id_user`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;
