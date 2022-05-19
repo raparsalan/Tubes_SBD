@@ -1,96 +1,205 @@
-/*
- Navicat Premium Data Transfer
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 19 Bulan Mei 2022 pada 09.17
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 8.1.2
 
- Source Server         : Sql
- Source Server Type    : MySQL
- Source Server Version : 100422
- Source Host           : localhost:3306
- Source Schema         : db_mbkm
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
- Target Server Type    : MySQL
- Target Server Version : 100422
- File Encoding         : 65001
 
- Date: 19/05/2022 11:11:09
-*/
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+--
+-- Database: `db_mbkm`
+--
 
--- ----------------------------
--- Table structure for daftar_peserta
--- ----------------------------
-DROP TABLE IF EXISTS `daftar_peserta`;
-CREATE TABLE `daftar_peserta`  (
-  `id_mhs` int NULL DEFAULT NULL,
-  `id_program` int NULL DEFAULT NULL,
-  `sks_ditukar` int NULL DEFAULT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  INDEX `id mahasiswa`(`id_mhs` ASC) USING BTREE,
-  INDEX `id program`(`id_program` ASC) USING BTREE,
-  CONSTRAINT `id mahasiswa` FOREIGN KEY (`id_mhs`) REFERENCES `mahasiswa` (`id_mhs`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `id program` FOREIGN KEY (`id_program`) REFERENCES `program` (`id_program`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+-- --------------------------------------------------------
 
--- ----------------------------
--- Records of daftar_peserta
--- ----------------------------
+--
+-- Struktur dari tabel `daftar_peserta`
+--
 
--- ----------------------------
--- Table structure for mahasiswa
--- ----------------------------
-DROP TABLE IF EXISTS `mahasiswa`;
-CREATE TABLE `mahasiswa`  (
-  `id_mhs` int NOT NULL AUTO_INCREMENT,
-  `nim` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `nama_lengkap` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `semester` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id_mhs`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+CREATE TABLE `daftar_peserta` (
+  `id_daftar` int(11) NOT NULL,
+  `id_mhs` int(11) NOT NULL,
+  `id_program` int(11) NOT NULL,
+  `sks_ditukar` int(11) NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Records of mahasiswa
--- ----------------------------
+--
+-- Dumping data untuk tabel `daftar_peserta`
+--
 
--- ----------------------------
--- Table structure for program
--- ----------------------------
-DROP TABLE IF EXISTS `program`;
-CREATE TABLE `program`  (
-  `id_program` int NOT NULL AUTO_INCREMENT,
-  `nama_program` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_program`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+INSERT INTO `daftar_peserta` (`id_daftar`, `id_mhs`, `id_program`, `sks_ditukar`, `status`) VALUES
+(1, 1, 7, 20, 'Pendaftaran'),
+(2, 5, 8, 20, 'Pendaftaran'),
+(3, 2, 8, 40, 'Lolos'),
+(4, 3, 7, 20, 'Mengundurkan Diri / Gagal'),
+(5, 4, 7, 20, 'Pendaftaran');
 
--- ----------------------------
--- Records of program
--- ----------------------------
-INSERT INTO `program` VALUES (1, 'Kampus Mengajar');
-INSERT INTO `program` VALUES (2, 'Magang / Praktik Kerja');
-INSERT INTO `program` VALUES (3, 'Membangun Desa');
-INSERT INTO `program` VALUES (4, 'Pertukaran Mahasiswa Merdeka');
-INSERT INTO `program` VALUES (5, 'Riset atau Penelitian');
-INSERT INTO `program` VALUES (6, 'Studi Independen');
-INSERT INTO `program` VALUES (7, 'Bangkit by Google, Goto, dan Traveloka');
-INSERT INTO `program` VALUES (8, 'Indonesian International Student Mobility Awards');
-INSERT INTO `program` VALUES (9, 'Kementrian ESDM - GERILYA');
-INSERT INTO `program` VALUES (10, 'Pejuang Muda Kampus Merdeka');
-INSERT INTO `program` VALUES (11, 'Proyek Kemanusiaan');
+-- --------------------------------------------------------
 
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `id_user` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `authority` int NULL DEFAULT NULL,
-  PRIMARY KEY (`id_user`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+--
+-- Struktur dari tabel `mahasiswa`
+--
 
--- ----------------------------
--- Records of user
--- ----------------------------
+CREATE TABLE `mahasiswa` (
+  `id_mhs` int(11) NOT NULL,
+  `nim` varchar(30) DEFAULT NULL,
+  `nama_lengkap` varchar(100) DEFAULT NULL,
+  `semester` int(11) DEFAULT NULL,
+  `id_user` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
-SET FOREIGN_KEY_CHECKS = 1;
+--
+-- Dumping data untuk tabel `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`id_mhs`, `nim`, `nama_lengkap`, `semester`, `id_user`) VALUES
+(1, '2108938', 'Rafi Arsalan ', 2, 1),
+(2, '2100195', 'Davin Fausta', 6, 2),
+(3, '2105879', 'Farhan', 4, 3),
+(4, '2103703', 'Fauziah Zayyan', 5, 4),
+(5, '2103507', 'Indah Resti Fauzi', 3, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `program`
+--
+
+CREATE TABLE `program` (
+  `id_program` int(11) NOT NULL,
+  `nama_program` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data untuk tabel `program`
+--
+
+INSERT INTO `program` (`id_program`, `nama_program`) VALUES
+(1, 'Kampus Mengajar'),
+(2, 'Magang / Praktik Kerja'),
+(3, 'Membangun Desa'),
+(4, 'Pertukaran Mahasiswa Merdeka'),
+(5, 'Riset atau Penelitian'),
+(6, 'Studi Independen'),
+(7, 'Bangkit by Google, Goto, dan Traveloka'),
+(8, 'Indonesian International Student Mobility Awards'),
+(9, 'Kementrian ESDM - GERILYA'),
+(10, 'Pejuang Muda Kampus Merdeka'),
+(11, 'Proyek Kemanusiaan');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `user`
+--
+
+CREATE TABLE `user` (
+  `id_user` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `authority` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data untuk tabel `user`
+--
+
+INSERT INTO `user` (`id_user`, `username`, `password`, `authority`) VALUES
+(1, '218938', '12345', 0),
+(2, '2100195', 'abcde', 0),
+(3, '2105879', 'fghij', 0),
+(4, '2103703', 'klmno', 0),
+(5, '2103507', 'indahjele', 0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `daftar_peserta`
+--
+ALTER TABLE `daftar_peserta`
+  ADD PRIMARY KEY (`id_daftar`),
+  ADD KEY `id_mhs` (`id_mhs`),
+  ADD KEY `id_program` (`id_program`);
+
+--
+-- Indeks untuk tabel `mahasiswa`
+--
+ALTER TABLE `mahasiswa`
+  ADD PRIMARY KEY (`id_mhs`) USING BTREE,
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Indeks untuk tabel `program`
+--
+ALTER TABLE `program`
+  ADD PRIMARY KEY (`id_program`) USING BTREE;
+
+--
+-- Indeks untuk tabel `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id_user`) USING BTREE;
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `daftar_peserta`
+--
+ALTER TABLE `daftar_peserta`
+  MODIFY `id_daftar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `mahasiswa`
+--
+ALTER TABLE `mahasiswa`
+  MODIFY `id_mhs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `program`
+--
+ALTER TABLE `program`
+  MODIFY `id_program` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT untuk tabel `user`
+--
+ALTER TABLE `user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `daftar_peserta`
+--
+ALTER TABLE `daftar_peserta`
+  ADD CONSTRAINT `id_mhs` FOREIGN KEY (`id_mhs`) REFERENCES `mahasiswa` (`id_mhs`),
+  ADD CONSTRAINT `id_program` FOREIGN KEY (`id_program`) REFERENCES `program` (`id_program`);
+
+--
+-- Ketidakleluasaan untuk tabel `mahasiswa`
+--
+ALTER TABLE `mahasiswa`
+  ADD CONSTRAINT `id_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
