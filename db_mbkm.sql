@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Jun 2022 pada 20.37
+-- Waktu pembuatan: 03 Jun 2022 pada 14.20
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_mbkm`
+-- Database: `db_mbkm2`
 --
 
 -- --------------------------------------------------------
@@ -42,27 +42,47 @@ CREATE TABLE `daftar_peserta` (
 --
 
 INSERT INTO `daftar_peserta` (`id_daftar`, `id_mhs`, `id_program`, `sks_ditukar`, `id_status`, `tanggal_ikut`, `semester_ikut`) VALUES
-(22, 6, 7, 20, 3, '2021-09-10', 5),
-(23, 13, 5, 10, 2, '2022-05-10', 6),
-(24, 15, 4, 10, 1, '2021-09-08', 7),
-(25, 33, 5, 20, 1, '2022-06-11', 5),
-(26, 3, 5, 20, 2, '2022-06-22', 5),
-(27, 23, 5, 20, 3, '2022-06-23', 5),
-(28, 26, 11, 20, 3, '2022-06-14', 5),
-(29, 11, 1, 20, 2, '2021-09-27', 5),
-(30, 11, 11, 20, 2, '2022-06-10', 6),
-(31, 29, 2, 20, 4, '2021-09-12', 6),
-(32, 38, 1, 20, 4, '2021-09-22', 6),
-(33, 32, 10, 20, 1, '2021-09-21', 7),
-(34, 12, 3, 20, 1, '2022-06-19', 5),
-(35, 5, 4, 20, 2, '2022-06-20', 7),
-(36, 7, 8, 20, 3, '2021-09-24', 6),
-(37, 8, 6, 20, 3, '2022-06-23', 6),
-(38, 1, 7, 20, 3, '2021-09-26', 5),
-(39, 3, 4, 20, 2, '2021-09-11', 5),
-(40, 9, 2, 20, 1, '2022-06-13', 7),
-(41, 17, 2, 20, 2, '2021-09-16', 6),
-(42, 19, 9, 20, 3, '2022-06-13', 5);
+(1, 1, 1, 20, 1, '2022-06-01', 6),
+(2, 5, 2, 20, 4, '2020-09-12', 5),
+(3, 7, 3, 10, 3, '2021-09-11', 5),
+(4, 13, 4, 20, 4, '2020-09-13', 5),
+(5, 15, 5, 20, 3, '2021-09-17', 5),
+(6, 21, 6, 20, 2, '2022-06-02', 6),
+(7, 23, 7, 20, 4, '2020-09-17', 6),
+(8, 27, 8, 20, 2, '2022-06-01', 6),
+(9, 29, 9, 20, 4, '2020-09-16', 6),
+(10, 33, 10, 20, 1, '2022-06-01', 6),
+(11, 35, 11, 10, 1, '2022-06-01', 6),
+(12, 2, 2, 20, 2, '2022-06-02', 6),
+(13, 4, 3, 20, 1, '2022-06-02', 6),
+(14, 8, 3, 20, 2, '2022-06-02', 6),
+(15, 16, 3, 20, 3, '2021-09-16', 5);
+
+--
+-- Trigger `daftar_peserta`
+--
+DELIMITER $$
+CREATE TRIGGER `tr_sks_insert` AFTER INSERT ON `daftar_peserta` FOR EACH ROW BEGIN
+  IF NEW.id_status = 3
+    THEN 
+    UPDATE mahasiswa SET 
+    mahasiswa.total_sks = mahasiswa.total_sks + NEW.sks_ditukar
+    WHERE mahasiswa.id_mhs = NEW.id_mhs;
+  END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `tr_sks_update` AFTER UPDATE ON `daftar_peserta` FOR EACH ROW BEGIN
+  IF NEW.id_status = 3
+    THEN 
+    UPDATE mahasiswa SET 
+    mahasiswa.total_sks = mahasiswa.total_sks + NEW.sks_ditukar
+    WHERE  mahasiswa.id_mhs = NEW.id_mhs;
+  END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -86,44 +106,44 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`id_mhs`, `nim`, `nama_lengkap`, `jenis_kelamin`, `semester_sekarang`, `ipk`, `total_sks`, `id_user`) VALUES
-(1, '2108061', 'Achmad Fauzan', 'Laki-Laki', 6, 3.86, 0, 2),
-(2, '2105673', 'Alghaniyu Naufal Hamid', 'Laki-Laki', 6, 3.56, 0, 3),
-(3, '2101147', 'Amida Zulfa Laila', 'Perempuan', 8, 3.88, 0, 4),
-(4, '2101114', 'Anandita Kusumah Mulyadi', 'Perempuan', 6, 3.98, 0, 5),
-(5, '2102671', 'Anderfa Jalu Kawani', 'Laki-Laki', 8, 3.45, 0, 6),
-(6, '2102585', 'Apri Anggara Yudha', 'Laki-Laki', 8, 3.74, 0, 7),
-(7, '2102268', 'Audry Leonardo Loo', 'Laki-Laki', 6, 3.86, 0, 8),
-(8, '2100901', 'Azzahra Siti Hadjar', 'Perempuan', 6, 3.1, 0, 9),
-(9, '2103727', 'Cantika Putri Arbiliansyah', 'Perempuan', 8, 3.66, 0, 10),
-(10, '2100195', 'Davin Fausta Putra Sanjaya', 'Laki-Laki', 6, 3.68, 0, 11),
-(11, '2105979', 'Farhan Muzhaffar Tiras Putra', 'Laki-Laki', 8, 3.25, 0, 12),
-(12, '2103703', 'Fauziyyah Zayyan Nur', 'Perempuan', 6, 3.78, 0, 13),
-(13, '2105927', 'Febry Syaman Hasan', 'Laki-Laki', 8, 3.85, 0, 14),
-(14, '2102292', 'Harold Vidian Exaudi Simarmata', 'Laki-Laki', 8, 2.89, 0, 15),
-(15, '2108077', 'Hestina Dwi Hartiwi', 'Perempuan', 6, 3.93, 0, 16),
-(16, '2103507', 'Indah Resti Fauzi', 'Perempuan', 6, 4, 0, 17),
-(17, '2102421', 'Kania Dinda Fasya', 'Perempuan', 8, 3.65, 0, 18),
-(18, '2100991', 'Khana Yusdiana', 'Perempuan', 6, 3.27, 0, 19),
-(19, '2108804', 'Laelatusyadiyah', 'Perempuan', 8, 3, 0, 20),
-(20, '2102204', 'Mohamad Asyqari Anugrah', 'Laki-Laki', 8, 3.58, 0, 21),
-(21, '2100137', 'Muhammad Nur Yasin Amadudin', 'Laki-Laki', 6, 3.89, 0, 22),
-(22, '2102665', 'Muhammad Cahyana Bintang Fajar', 'Laki-Laki', 6, 3.88, 0, 23),
-(23, '2108927', 'Muhammad Fahru Rozi', 'Laki-Laki', 8, 3.74, 0, 24),
-(24, '2105997', 'Muhammad Fakhri Fadhlurrahman', 'Laki-Laki', 6, 3.64, 0, 25),
-(25, '2100187', 'Muhammad Hilmy Rasyad Sofyan', 'Laki-Laki', 8, 2.65, 0, 26),
-(26, '2102313', 'Muhammad Kamal Robbani', 'Laki-Laki', 8, 2.23, 0, 27),
-(27, '2100192', 'Muhammad Rayhan Nur', 'Laki-Laki', 6, 3.45, 0, 28),
-(28, '2102843', 'Najma Qalbi Dwiharani', 'Perempuan', 6, 3.64, 0, 29),
-(29, '2105885', 'Qurroti Ainii', 'Perempuan', 8, 3.95, 0, 30),
-(30, '2108938', 'Rafi Arsalan', 'Laki-Laki', 6, 3.86, 0, 31),
-(31, '2100846', 'Rafly Putra Santoso', 'Laki-Laki', 8, 3, 0, 32),
-(32, '2105745', 'Rodwan Albana', 'Laki-Laki', 8, 3.81, 0, 33),
-(33, '2101103', 'Rifqi Fajar Indrayani', 'Laki-Laki', 6, 3.92, 0, 34),
-(34, '2106000', 'Sabila Rosad', 'Laki-Laki', 8, 3.85, 0, 35),
-(35, '2108067', 'Villeneuve Sndhira Suwandhi', 'Laki-Laki', 6, 3.78, 0, 36),
-(36, '2102159', 'Virza Raihan Kurniawan', 'Laki-Laki', 8, 3.15, 0, 37),
-(37, '2103207', 'Yasmin Fathanah Zakiyyah', 'Perempuan', 8, 3.68, 0, 38),
-(38, '2102545', 'Zahra Fitria Maharani', 'Perempuan', 6, 3.92, 0, 39);
+(1, '2108061', 'Achmad Fauzan', 'Laki-Laki', 6, 3.86, 114, 2),
+(2, '2105673', 'Alghaniyu Naufal Hamid', 'Laki-Laki', 6, 3.56, 113, 3),
+(3, '2101147', 'Amida Zulfa Laila', 'Perempuan', 8, 3.88, 145, 4),
+(4, '2101114', 'Anandita Kusumah Mulyadi', 'Perempuan', 6, 3.98, 113, 5),
+(5, '2102671', 'Anderfa Jalu Kawani', 'Laki-Laki', 8, 3.45, 142, 6),
+(6, '2102585', 'Apri Anggara Yudha', 'Laki-Laki', 8, 3.74, 148, 7),
+(7, '2102268', 'Audry Leonardo Loo', 'Laki-Laki', 6, 3.86, 116, 8),
+(8, '2100901', 'Azzahra Siti Hadjar', 'Perempuan', 6, 3.1, 117, 9),
+(9, '2103727', 'Cantika Putri Arbiliansyah', 'Perempuan', 8, 3.66, 146, 10),
+(10, '2100195', 'Davin Fausta Putra Sanjaya', 'Laki-Laki', 6, 3.68, 118, 11),
+(11, '2105979', 'Farhan Muzhaffar Tiras Putra', 'Laki-Laki', 8, 3.25, 143, 12),
+(12, '2103703', 'Fauziyyah Zayyan Nur', 'Perempuan', 6, 3.78, 111, 13),
+(13, '2105927', 'Febry Syaman Hasan', 'Laki-Laki', 8, 3.85, 147, 14),
+(14, '2102292', 'Harold Vidian Exaudi Simarmata', 'Laki-Laki', 8, 2.89, 142, 15),
+(15, '2108077', 'Hestina Dwi Hartiwi', 'Perempuan', 6, 3.93, 115, 16),
+(16, '2103507', 'Indah Resti Fauzi', 'Perempuan', 6, 4, 116, 17),
+(17, '2102421', 'Kania Dinda Fasya', 'Perempuan', 8, 3.65, 147, 18),
+(18, '2100991', 'Khana Yusdiana', 'Perempuan', 6, 3.27, 112, 19),
+(19, '2108804', 'Laelatusyadiyah', 'Perempuan', 8, 3, 143, 20),
+(20, '2102204', 'Mohamad Asyqari Anugrah', 'Laki-Laki', 8, 3.58, 145, 21),
+(21, '2100137', 'Muhammad Nur Yasin Amadudin', 'Laki-Laki', 6, 3.89, 113, 22),
+(22, '2102665', 'Muhammad Cahyana Bintang Fajar', 'Laki-Laki', 6, 3.88, 119, 23),
+(23, '2108927', 'Muhammad Fahru Rozi', 'Laki-Laki', 8, 3.74, 145, 24),
+(24, '2105997', 'Muhammad Fakhri Fadhlurrahman', 'Laki-Laki', 6, 3.64, 118, 25),
+(25, '2100187', 'Muhammad Hilmy Rasyad Sofyan', 'Laki-Laki', 8, 2.65, 142, 26),
+(26, '2102313', 'Muhammad Kamal Robbani', 'Laki-Laki', 8, 2.23, 146, 27),
+(27, '2100192', 'Muhammad Rayhan Nur', 'Laki-Laki', 6, 3.45, 113, 28),
+(28, '2102843', 'Najma Qalbi Dwiharani', 'Perempuan', 6, 3.64, 116, 29),
+(29, '2105885', 'Qurroti Ainii', 'Perempuan', 8, 3.95, 148, 30),
+(30, '2108938', 'Rafi Arsalan', 'Laki-Laki', 6, 3.86, 110, 31),
+(31, '2100846', 'Rafly Putra Santoso', 'Laki-Laki', 8, 3, 140, 32),
+(32, '2105745', 'Ridwan Albana', 'Laki-Laki', 8, 3.81, 146, 33),
+(33, '2101103', 'Rifqi Fajar Indrayani', 'Laki-Laki', 6, 3.92, 117, 34),
+(34, '2106000', 'Sabila Rosad', 'Laki-Laki', 8, 3.85, 139, 35),
+(35, '2108067', 'Villeneuve Sndhira Suwandhi', 'Laki-Laki', 6, 3.78, 115, 36),
+(36, '2102159', 'Virza Raihan Kurniawan', 'Laki-Laki', 8, 3.15, 141, 37),
+(37, '2103207', 'Yasmin Fathanah Zakiyyah', 'Perempuan', 8, 3.68, 146, 38),
+(38, '2102545', 'Zahra Fitria Maharani', 'Perempuan', 6, 3.92, 115, 39);
 
 -- --------------------------------------------------------
 
@@ -278,7 +298,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `daftar_peserta`
 --
 ALTER TABLE `daftar_peserta`
-  MODIFY `id_daftar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id_daftar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `mahasiswa`

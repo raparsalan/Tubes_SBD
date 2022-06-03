@@ -8,7 +8,7 @@ if (!isset($_SESSION) || ($_SESSION['loggedin'] != true)) {
 }
 
 $id = $_SESSION['id'];
-$query = mysqli_query($mysqli, "SELECT * FROM mahasiswa WHERE mahasiswa.id_user = $id");
+$query = mysqli_query($mysqli, "SELECT * FROM mahasiswa WHERE mahasiswa.id_mhs = $id");
 $data = mysqli_fetch_array($query);
 ?>
 

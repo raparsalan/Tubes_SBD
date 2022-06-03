@@ -43,9 +43,11 @@
                             $hash = password_hash($password, PASSWORD_DEFAULT);
                             if(password_verify($password, $hash)){
                                 session_start();
-
+                                $ambilid = mysqli_query($mysqli, "SELECT id_mhs FROM mahasiswa WHERE mahasiswa.id_user = $id");
+                                $data = mysqli_fetch_array($ambilid);
+                                $id_mhs = $data['id_mhs'];
                                 $_SESSION["loggedin"] = true;
-                                $_SESSION["id"] = $id;
+                                $_SESSION["id"] = $id_mhs;
                                 $_SESSION["user_name"] = $user_name;
                                 $_SESSION["user_authority"] = $user_authority;
                                 

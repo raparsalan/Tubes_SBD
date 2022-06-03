@@ -55,7 +55,7 @@ $id = $_SESSION['id'];
                         <input type="hidden" class="form-control" name="id_mhs" value="<?= $id ?>">
                         <div class="form-group">
                             <label>Program yang anda Ikuti</label>
-                            <select class="form-control select2" name="id_program">
+                            <select class="form-control select2" name="id_program" required>
                                 <?php
                                 $query = mysqli_query($mysqli, "SELECT * FROM program");
                                 while ($row = mysqli_fetch_array($query)) { ?>
@@ -67,15 +67,15 @@ $id = $_SESSION['id'];
                         </div>
                         <div class="form-group">
                             <label for="sks_ditukar">Berapa SKS yang Dikonversi ?</label>
-                            <input type="number" class="form-control" name="sks_ditukar">
+                            <input type="number" class="form-control" name="sks_ditukar" required>
                         </div>
                         <div class="form-group">
                             <label for="semester_ikut">Pada semester berapakah anda mengikuti program ini ?</label>
-                            <input type="number" class="form-control" name="semester_ikut">
+                            <input type="number" class="form-control" name="semester_ikut" required>
                         </div>
                         <div class="form-group">
                             <label>Status dari MBKM anda ?</label>
-                            <select class="form-control" name="id_status">
+                            <select class="form-control" name="id_status" required>
                                 <?php
                                 $query = mysqli_query($mysqli, "SELECT * FROM status");
                                 while ($row = mysqli_fetch_array($query)) { ?>
@@ -88,7 +88,7 @@ $id = $_SESSION['id'];
                         <div class="form-group">
                             <label>Date:</label>
                             <div class="input-group date">
-                                <input type="date" class="form-control datetimepicker-input" name="tanggal" />
+                                <input type="date" class="form-control datetimepicker-input" name="tanggal" required />
                             </div>
                         </div>
                     </div>
