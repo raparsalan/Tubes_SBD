@@ -8,7 +8,7 @@ if (!isset($_SESSION) || ($_SESSION['loggedin'] != true)) {
 }
 
 $id = $_SESSION['id'];
-$query = mysqli_query($mysqli, "SELECT  tanggal_ikut, nama_program, keterangan FROM  daftar_peserta, program, status WHERE daftar_peserta.id_mhs= $id and daftar_peserta.id_program = program.id_program and daftar_peserta.id_status = status.id_status;");
+$query = mysqli_query($mysqli, "SELECT  id_daftar, tanggal_ikut, nama_program, keterangan FROM  daftar_peserta, program, status WHERE daftar_peserta.id_mhs= $id and daftar_peserta.id_program = program.id_program and daftar_peserta.id_status = status.id_status;");
 
 ?>
 
@@ -112,19 +112,65 @@ $query = mysqli_query($mysqli, "SELECT  tanggal_ikut, nama_program, keterangan F
                                             <td><?= $row['keterangan'] ?></td>
                                             <td class="text-center"><?= $row['tanggal_ikut'] ?></td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                    Launch demo modal
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateStatus<?= $row['id_daftar'] ?>">
+                                                    <i class="fa fa-edit"></i> Update Status
                                                 </button>
                                             </td>
                                         </tr>
-                                    <?php $no++; }
-                                     ?>
+                                        <form action="" method="POST">
+                                            <div class="modal fade" id="updateStatus<?= $row['id_daftar'] ?>" tabindex="-1" aria-labelledby="updateStatusLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="updateStatusLabel">Lapor Perkembangan Status MBKM</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <input type="text" name="id_daftar" id="id_daftar" value="<?= $row['id_daftar'] ?>">
+                                                            <div class="form-group">
+                                                                <label>Status dari MBKM anda ?</label>
+                                                                <select class="form-control" name="id_status">
+                                                                    <?php
+                                                                    $status = mysqli_query($mysqli, "SELECT * FROM status");
+                                                                    while ($data = mysqli_fetch_array($status)) { ?>
+                                                                        <option value="<?= $data['id_status'] ?>"><?= $data['keterangan'] ?></option>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-primary" name="simpan">Simpan Status</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        
+                                    <?php 
+                                     if(isset($_POST['simpan'])){
+                                        $id_daftar = $_POST['id_daftar'];
+                                        $id_status = $_POST['id_status'];
+                                        $update = mysqli_query($mysqli, "UPDATE daftar_peserta SET id_status = $id_status WHERE id_daftar = $id_daftar");
+                                        if($update == TRUE){?>
+                                            <script>
+                                                alert("status berasil diubah");
+                                                window.location= "index_program.php"
+                                            </script>
+                                            <?php
+                                        }
+                                        
+
+                                     }
+                                    $no++;
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         <?php } ?>
-
                     </div>
-
                 </div>
             </div>
     </section>
@@ -155,7 +201,6 @@ $query = mysqli_query($mysqli, "SELECT  tanggal_ikut, nama_program, keterangan F
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
 </body>
 
 </html>

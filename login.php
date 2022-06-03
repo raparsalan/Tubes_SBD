@@ -41,14 +41,14 @@
 
                         if(mysqli_stmt_fetch($stmt)){
                             $hash = password_hash($password, PASSWORD_DEFAULT);
-                            if(password_verify($user_password, $hash)){
+                            if(password_verify($password, $hash)){
                                 session_start();
 
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["id"] = $id;
                                 $_SESSION["user_name"] = $user_name;
                                 $_SESSION["user_authority"] = $user_authority;
-
+                                
                                 if(trim($_SESSION['user_authority']) == 1){
                                     //alertBox("masuk sebagai admin");
 
