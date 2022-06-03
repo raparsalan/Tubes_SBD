@@ -105,6 +105,7 @@ $query = mysqli_query($mysqli, "SELECT  id_daftar, tanggal_ikut, nama_program, k
                                     <?php
                                     $no = 1;
                                     while ($row = mysqli_fetch_array($query)) {
+                                        $id_daftar = $row['id_daftar'];
                                     ?>
                                         <tr>
                                             <td class="text-center"><?= $no ?></td>
@@ -126,7 +127,6 @@ $query = mysqli_query($mysqli, "SELECT  id_daftar, tanggal_ikut, nama_program, k
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <input type="text" name="id_daftar" id="id_daftar" value="<?= $row['id_daftar'] ?>">
                                                             <div class="form-group">
                                                                 <label>Status dari MBKM anda ?</label>
                                                                 <select class="form-control" name="id_status">
@@ -151,7 +151,6 @@ $query = mysqli_query($mysqli, "SELECT  id_daftar, tanggal_ikut, nama_program, k
                                         
                                     <?php 
                                      if(isset($_POST['simpan'])){
-                                        $id_daftar = $_POST['id_daftar'];
                                         $id_status = $_POST['id_status'];
                                         $update = mysqli_query($mysqli, "UPDATE daftar_peserta SET id_status = $id_status WHERE id_daftar = $id_daftar");
                                         if($update == TRUE){?>
